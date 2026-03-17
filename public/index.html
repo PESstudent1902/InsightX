@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLIGHT 404 — CLASSIFIED</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { transition: opacity .55s ease; }
+    .fade-out { opacity: 0 !important; }
+  </style>
+</head>
+<body>
+
+<!-- ── custom cursor ──────────────────────────────────── -->
+<div id="f404-cursor">
+  <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 2 L17 20 L14 17 L11 20 Z" fill="#00f5ff" opacity=".9"/>
+    <path d="M8 13 L14 11 L20 13 L14 17 Z" fill="#00f5ff" opacity=".55"/>
+    <circle cx="14" cy="14" r="2" fill="#ff1744" opacity=".8"/>
+  </svg>
+</div>
+<div id="f404-cursor-dot"></div>
+
+<!-- ── unlock flash ───────────────────────────────────── -->
+<div id="unlock-flash"></div>
+
+<!-- ── toasts ────────────────────────────────────────── -->
+<div id="toasts"></div>
+
+<!-- ── particles ─────────────────────────────────────── -->
+<canvas id="particles"></canvas>
+
+<!-- ── main landing ──────────────────────────────────── -->
+<main id="landing-page">
+
+  <!-- runway lights -->
+  <div class="runway l">
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+  </div>
+  <div class="runway r">
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+    <div class="rw-dot"></div><div class="rw-dot"></div><div class="rw-dot"></div>
+  </div>
+
+  <!-- content -->
+  <div class="land-content">
+    <div class="land-badge">▶ &nbsp; CLASSIFIED EVIDENCE &nbsp;·&nbsp; CASE F404-2024 &nbsp; ◀</div>
+
+    <h1 class="glitch land-title" data-text="FLIGHT 404">FLIGHT 404</h1>
+
+    <p class="land-sub">
+      ONE PASSENGER &nbsp;·&nbsp; SEVEN SECRETS &nbsp;·&nbsp; <em>ZERO SURVIVORS</em>
+    </p>
+
+    <button class="land-btn" id="enter-btn" onclick="enterGame()">
+      ✈ &nbsp; ENTER THE INVESTIGATION
+    </button>
+
+    <div style="margin-top:2.2rem; font-family:var(--M); font-size:.58rem; color:var(--txt3); letter-spacing:3px; line-height:2;">
+      SQL &nbsp;·&nbsp; EXCEL &nbsp;·&nbsp; FORENSICS &nbsp;·&nbsp; DEDUCTION
+    </div>
+  </div>
+
+  <div class="land-status" id="srv-status">
+    CONNECTING TO SERVER…
+  </div>
+</main>
+
+<script src="js/particles.js"></script>
+<script src="js/cursor.js"></script>
+<script>
+  // Check server
+  fetch('/api/start')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('srv-status').textContent =
+        'SERVER: ONLINE  ·  EVIDENCE: CLASSIFIED  ·  CASE: F404-2024-ATH  ·  READY';
+    })
+    .catch(() => {
+      document.getElementById('srv-status').textContent =
+        '⚠  SERVER OFFLINE — PLEASE START server.js';
+      document.getElementById('srv-status').style.color = 'var(--red)';
+    });
+
+  function enterGame() {
+    fetch('/api/start')
+      .then(r => r.json())
+      .then(() => {
+        document.body.classList.add('fade-out');
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 560);
+      })
+      .catch(() => alert('Cannot reach server. Make sure server.js is running on port 3000.'));
+  }
+</script>
+</body>
+</html>

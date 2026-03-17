@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLIGHT 404 — VOLUNTEER ADMIN</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- custom cursor -->
+<div id="f404-cursor">
+  <svg viewBox="0 0 28 28" fill="none">
+    <path d="M14 2 L17 20 L14 17 L11 20 Z" fill="#ff1744" opacity=".9"/>
+    <path d="M8 13 L14 11 L20 13 L14 17 Z" fill="#ff1744" opacity=".55"/>
+    <circle cx="14" cy="14" r="2" fill="#00f5ff" opacity=".8"/>
+  </svg>
+</div>
+<div id="f404-cursor-dot"></div>
+<div id="toasts"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════════════════════ -->
+<div id="login-screen" class="login-screen">
+  <div class="login-card scanlines">
+    <div class="login-title">🔐 ADMIN</div>
+    <div class="login-sub">VOLUNTEER ACCESS &nbsp;·&nbsp; FLIGHT 404 CONTROL PANEL</div>
+    <div class="form-g" style="margin-bottom:.9rem;">
+      <label class="form-lbl">Username</label>
+      <input class="form-inp" id="l-user" type="text" placeholder="volunteer" autocomplete="username">
+    </div>
+    <div class="form-g">
+      <label class="form-lbl">Password</label>
+      <input class="form-inp" id="l-pass" type="password" placeholder="••••••••••" autocomplete="current-password">
+    </div>
+    <div class="login-err" id="login-err">⚠ Invalid credentials. Try again.</div>
+    <button class="btn-login" onclick="doLogin()">ENTER CONTROL ROOM</button>
+    <div style="margin-top:1.4rem;font-family:var(--M);font-size:.55rem;color:var(--txt3);letter-spacing:2px;line-height:2;">
+      DEFAULT &nbsp;·&nbsp; user: <span style="color:var(--cyan)">volunteer</span> &nbsp;·&nbsp; pass: <span style="color:var(--cyan)">F404Admin2024</span><br>
+      Change in server.js before the event.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     ADMIN PANEL (hidden until logged in)
+══════════════════════════════════════════════════════════ -->
+<div id="admin-panel" style="display:none;">
+
+  <!-- NAV -->
+  <nav class="topnav">
+    <a class="nav-logo" href="index.html" style="color:var(--red);">F<span style="color:var(--cyan)">404</span></a>
+    <div class="nav-mid" style="font-family:var(--M);font-size:.62rem;color:var(--red);letter-spacing:3px;">
+      ⚙ VOLUNTEER CONTROL PANEL
+    </div>
+    <div class="nav-right">
+      <div class="nav-live" style="color:var(--red);" id="admin-clock">00:00:00</div>
+      <button class="btn-danger-a" onclick="doLogout()" style="font-size:.58rem;padding:6px 14px;">LOGOUT</button>
+    </div>
+  </nav>
+
+  <div class="admin-wrap">
+    <div class="admin-title">CONTROL ROOM</div>
+    <div class="admin-sub">FLIGHT 404 &nbsp;·&nbsp; VOLUNTEER TOOLS &nbsp;·&nbsp; MANUAL LAYER OVERRIDE</div>
+
+    <!-- ── GAME CLOCK ── -->
+    <div class="admin-section">
+      <div class="section-title">🕐 GAME CLOCK</div>
+      <div style="font-family:var(--M);font-size:.6rem;color:var(--txt3);letter-spacing:2px;margin-bottom:.4rem;">ELAPSED TIME</div>
+      <div class="clock-display" id="a-clock">00:00:00</div>
+      <div class="ctrl-row">
+        <button class="btn-a" onclick="resetGame()">↺ &nbsp;RESET & RESTART CLOCK</button>
+        <button class="btn-gold-a" onclick="syncNow()">⟳ &nbsp;SYNC NOW</button>
+        <button class="btn-danger-a" onclick="lockAll()">🔒 &nbsp;LOCK ALL LAYERS</button>
+        <button class="btn-a" style="color:var(--green);border-color:var(--green);" onclick="unlockAll()">🔓 &nbsp;UNLOCK ALL LAYERS</button>
+      </div>
+      <div style="margin-top:1.2rem;">
+        <div style="font-family:var(--M);font-size:.6rem;color:var(--txt3);letter-spacing:2px;margin-bottom:.5rem;">ADJUST GAME START TIME (shift clock forward/back)</div>
+        <div class="time-adj">
+          <label>SHIFT BY MINUTES:</label>
+          <input class="time-inp" id="shift-mins" type="number" value="0" min="-60" max="60">
+          <button class="btn-a" onclick="shiftClock()">APPLY SHIFT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LAYER OVERRIDES ── -->
+    <div class="admin-section">
+      <div class="section-title">🔓 LAYER OVERRIDES</div>
+      <div style="font-family:var(--M);font-size:.62rem;color:var(--txt2);letter-spacing:2px;line-height:1.9;margin-bottom:1rem;">
+        Use these controls to manually unlock or lock any layer regardless of the game timer.<br>
+        <span style="color:var(--gold);">GOLD border</span> = manual override active &nbsp;·&nbsp;
+        <span style="color:var(--cyan);">CYAN border</span> = unlocked by timer &nbsp;·&nbsp;
+        <span style="color:var(--red);">RED border</span> = locked
+      </div>
+      <div class="admin-layers" id="admin-layers">
+        <!-- injected by JS -->
+      </div>
+    </div>
+
+    <!-- ── SUBMISSIONS ── -->
+    <div class="admin-section">
+      <div class="section-title">📁 TEAM SUBMISSIONS</div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.8rem;">
+        <span style="font-family:var(--M);font-size:.62rem;color:var(--txt3);letter-spacing:2px;" id="sub-count">0 submissions</span>
+        <button class="btn-a" onclick="loadAdmin()">⟳ REFRESH</button>
+        <button class="btn-a" onclick="exportSubmissions()">↓ EXPORT CSV</button>
+      </div>
+      <div id="submissions-table">
+        <p class="no-data">No submissions yet.</p>
+      </div>
+    </div>
+
+    <!-- ── QUICK REFERENCE ── -->
+    <div class="admin-section">
+      <div class="section-title">📋 QUICK REFERENCE</div>
+      <div style="font-family:var(--M);font-size:.65rem;color:var(--txt2);letter-spacing:1px;line-height:2.2;">
+        <div><span style="color:var(--cyan)">CULPRIT:</span> &nbsp; Dr. Elena Vasquez &nbsp;(PAX002, Seat 3B, Spanish Biochemist)</div>
+        <div><span style="color:var(--cyan)">METHOD: </span> &nbsp; Tetrodotoxin extracted from fugu specimens in cargo container CONT-JP-007</div>
+        <div><span style="color:var(--cyan)">MOTIVE: </span> &nbsp; $2,000,000 life insurance policy on Victor Harman (filed next morning)</div>
+        <div><span style="color:var(--cyan)">KEY EVIDENCE:</span></div>
+        <div style="color:var(--txt3);padding-left:1.5rem;">
+          → Cargo CCTV: Vasquez accessed CONT-JP-007 at 03:43–03:46 UTC<br>
+          → ATC Logs: "Package has been delivered" phone call at 03:52 UTC from seat 3B<br>
+          → Passport DB: Vasquez flagged — 3 Japan trips, declared tetrodotoxin-bearing specimens<br>
+          → Insurance: Filed $2M claim on Harman the morning after death<br>
+          → Medical Examiner: Tetrodotoxin confirmed, fatal dose, oral ingestion
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-wrap -->
+</div><!-- /admin-panel -->
+
+<script src="js/cursor.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

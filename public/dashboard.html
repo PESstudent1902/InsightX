@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLIGHT 404 — EVIDENCE DOSSIER</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- custom cursor -->
+<div id="f404-cursor">
+  <svg viewBox="0 0 28 28" fill="none">
+    <path d="M14 2 L17 20 L14 17 L11 20 Z" fill="#00f5ff" opacity=".9"/>
+    <path d="M8 13 L14 11 L20 13 L14 17 Z" fill="#00f5ff" opacity=".55"/>
+    <circle cx="14" cy="14" r="2" fill="#ff1744" opacity=".8"/>
+  </svg>
+</div>
+<div id="f404-cursor-dot"></div>
+<div id="unlock-flash"></div>
+<div id="toasts"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav class="topnav">
+  <a class="nav-logo" href="index.html">FLIGHT<span>404</span></a>
+  <div class="nav-mid">
+    <div style="font-size:.58rem;letter-spacing:3px;">ELAPSED TIME</div>
+    <div class="nav-timer" id="nav-timer">00:00:00</div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-live" id="nav-live">LIVE</div>
+    <div style="font-family:var(--M);font-size:.58rem;color:var(--txt3);letter-spacing:2px;" id="unlock-count">0/8 UNLOCKED</div>
+  </div>
+</nav>
+
+<!-- ── DASHBOARD BODY ───────────────────────────────────────── -->
+<div class="dash-wrap">
+
+  <div class="dash-head">
+    <div class="dash-head-title">EVIDENCE DOSSIER</div>
+    <div class="dash-head-sub">CASE F404-2024-ATH &nbsp;·&nbsp; CLASSIFY: TOP SECRET &nbsp;·&nbsp; USE SQL TO UNCOVER THE TRUTH</div>
+    <div class="progress-bar" style="margin-top:1rem;">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+    <div style="font-family:var(--M);font-size:.58rem;color:var(--txt3);letter-spacing:3px;margin-top:.5rem;">
+      NEXT LAYER UNLOCKS IN: <span id="next-unlock" style="color:var(--cyan);">—</span>
+    </div>
+  </div>
+
+  <!-- layer cards injected here by JS -->
+  <div class="layers-grid" id="layers-grid"></div>
+
+  <!-- submit section -->
+  <div class="submit-wrap" id="submit-section">
+    <div class="submit-title">📁 &nbsp; SUBMIT YOUR FINDINGS</div>
+    <div class="form-grid">
+      <div class="form-g">
+        <label class="form-lbl">Team Name *</label>
+        <input class="form-inp" id="f-team" type="text" placeholder="e.g. Team Sherlock">
+      </div>
+      <div class="form-g">
+        <label class="form-lbl">Primary Suspect *</label>
+        <input class="form-inp" id="f-culprit" type="text" placeholder="Full name of the culprit">
+      </div>
+      <div class="form-g">
+        <label class="form-lbl">Motive</label>
+        <input class="form-inp" id="f-motive" type="text" placeholder="Why did they do it?">
+      </div>
+      <div class="form-g">
+        <label class="form-lbl">Method</label>
+        <input class="form-inp" id="f-method" type="text" placeholder="How was it done?">
+      </div>
+      <div class="form-g full">
+        <label class="form-lbl">Key Evidence (SQL queries / table references)</label>
+        <textarea class="form-ta" id="f-evidence" placeholder="Reference the layers and queries that led you to your conclusion…"></textarea>
+      </div>
+    </div>
+    <button class="btn-submit" onclick="submitFindings()">✈ &nbsp; FILE REPORT</button>
+  </div>
+
+</div><!-- /dash-wrap -->
+
+<!-- ══════════════════════════════════════════════════════════
+     DATA MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal scanlines">
+    <div class="modal-hdr">
+      <span class="modal-hdr-title" id="modal-title">LOADING…</span>
+      <div class="modal-hdr-right">
+        <span class="modal-rows-lbl" id="modal-rowcount"></span>
+        <button class="modal-close" onclick="closeModal()">✕ CLOSE</button>
+      </div>
+    </div>
+    <div class="modal-tabs">
+      <button class="mtab active" id="tab-table" onclick="switchTab('table')">⊞ &nbsp; DATA TABLE</button>
+      <button class="mtab" id="tab-sql"   onclick="switchTab('sql')">⌨ &nbsp; SQL CONSOLE</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <!-- content injected by JS -->
+    </div>
+  </div>
+</div>
+
+<script src="js/cursor.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

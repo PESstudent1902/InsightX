@@ -1,0 +1,19 @@
+{
+  "name": "flight-404-studyathon",
+  "version": "2.0.0",
+  "description": "Flight 404 Murder Mystery — SQL Investigation Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@vercel/kv": "^2.0.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "sql.js": "^1.11.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
