@@ -84,7 +84,7 @@
     })
     .catch(() => {
       document.getElementById('srv-status').textContent =
-        '⚠  SERVER OFFLINE — PLEASE START server.js';
+        '⚠  SERVER OFFLINE — CHECK DEPLOYMENT & ENVIRONMENT VARIABLES';
       document.getElementById('srv-status').style.color = 'var(--red)';
     });
 
@@ -95,7 +95,7 @@
         document.body.classList.add('fade-out');
         setTimeout(() => { window.location.href = 'dashboard.html'; }, 560);
       })
-      .catch(() => alert('Cannot reach server. Make sure server.js is running on port 3000.'));
+      .catch(() => alert('Cannot reach server. Please check your Vercel deployment and environment variables.'));
   }
 </script>
 </body>
